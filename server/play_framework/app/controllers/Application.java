@@ -20,7 +20,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.imageio.ImageIO;
@@ -29,44 +31,30 @@ import utils.yaml.YamlInterpreter;
 import views.html.*;
 
 import org.jfree.chart.*;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.DateTickUnit;
+import org.jfree.chart.axis.DateTickUnitType;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.Plot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
 import org.jfree.data.*;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
+import com.sun.java.swing.plaf.gtk.GTKConstants.Orientation;
 
 public class Application extends Controller {
 
 	public static Result index() {
-		List<NodeConfig> nc = NodeConfig.find.all();
-		return ok(views.html.index.render(nc));
+		return ok(views.html.index.render());
 	}
 	
-	public static Result viewNodeConfig( Long id ) {
-		return TODO;
-	}
-	
-	public static Result merda () throws IOException {
-	       DefaultPieDataset data = new DefaultPieDataset();
-	       data.setValue("Nata", 250);
-	       data.setValue("Queixo", 500);
-	       data.setValue("Limón", 10);
-	       
-	       JFreeChart chart = ChartFactory.createPieChart(
-	               "Exemplo de tarta",
-	               data,
-	               true, // legend?
-	               true, // tooltips?
-	               false // URLs?
-	       );
-	       
-	       BufferedImage bf = chart.createBufferedImage(500, 500);
-	       ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	       ImageIO.write(bf, "png", baos);
-	       baos.flush();
-	       byte[] imageInByte = baos.toByteArray();
-	       baos.close();
-	       InputStream is = new ByteArrayInputStream(imageInByte);
-	       return ok(is).as("image/png");
-	}
 
 	
 	public static Result uploadDataFile() {
@@ -75,19 +63,19 @@ public class Application extends Controller {
 		YamlInterpreter yi = new YamlInterpreter();
 		try {
 			NodeConfig nc = yi.readDataFile(f.getAbsolutePath());
-			nc.save();
+			NodeConfig ncDB = NodeConfig.findConfiguration(nc);
+			if(ncDB != null) {
+				ncDB.save();
+			} else {
+				nc.save();
+			}
+			//return ok(nc.toYaml());
+			//nc.save();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		/*
-		f.renameTo(new File(Play.application().path()+"test.txt"));
-		System.out.println(f.getAbsolutePath());
-		*/
-		return redirect(routes.Application.index());
+		return redirect(routes.Nodes.listNodeConfig());
 	}
 }

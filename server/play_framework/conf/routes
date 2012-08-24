@@ -3,13 +3,25 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                           		controllers.Application.index()
+
+# Nodes
+GET 	/data/list/	  		    	        controllers.Nodes.listNodeConfig()
+GET		/nodes/list/						controllers.Nodes.list()
+GET		/nodes/view/:id						controllers.Nodes.view(id:Long)
+GET		/nodes/edit/:id						controllers.Nodes.edit(id:Long)
+POST    /nodes/edit/						controllers.Nodes.modify()
 
 # Upload Data File
-GET     /dataFile					controllers.Application.index()
-POST    /dataFile					controllers.Application.uploadDataFile()
+POST    /data/upload/yaml   			    controllers.Application.uploadDataFile()
+
+# Sensors
+GET		/data/sensor/:id			        controllers.Sensors.viewSensorConfig(id:Long)
+GET		/sensors/getCSV/:id.csv				controllers.Sensors.getCSV(id:Long)
+
+#Plots
+GET		/sensors/plot/:id 				    controllers.Charts.viewPlot(id:Long, di:String?=null , df:String?=null )
+GET		/sensors/plotWindow/:id			    controllers.Charts.plotWindow(id:Long, di:String?=null , df:String?=null )
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
-
-GET 	/merda					    controllers.Application.merda()
+GET     /assets/*file               		controllers.Assets.at(path="/public", file)

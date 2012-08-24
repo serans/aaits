@@ -90,7 +90,7 @@ public class YamlInterpreter {
 		Calendar c1 = Calendar.getInstance();
 		
 		c1.setTimeInMillis(StartTime.getTime()+Integer.parseInt(csvLine.nextToken()));
-		m.timestamp = this.StartTime;
+		m.timestamp = c1.getTime();
 		
 		//second: id
 		(nc.getSensorConfigbyInternalId(Integer.parseInt(csvLine.nextToken()))).measurements.add(m);
@@ -107,7 +107,7 @@ public class YamlInterpreter {
 	    }else if( yl.getKey().equals("description") ) { 
 	    	nc.description = yl.getValue();
 	    }else if( yl.getKey().equals("device_uid") ) { 
-	    	nc.deviceUid = Integer.parseInt(yl.getValue());
+	    	nc.deviceUid = Long.parseLong(yl.getValue());
 	    }else if( yl.getKey().equals("start_time")) {
 	    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    	this.StartTime = df.parse(yl.getValue());
@@ -134,6 +134,5 @@ public class YamlInterpreter {
 	    }else if( yl.getKey().equals("steps") ) { 
 	    	sc.steps = Integer.parseInt(yl.getValue());
 	    }
-		
 	}
 }
