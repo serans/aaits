@@ -139,3 +139,25 @@ small {
 dd {
 	margin-bottom: 10px;
 }
+
+#chart_wrap {
+	position:relative;
+}
+
+#chart_veil {
+	position: absolute;
+	top: 34px;
+	left: 33%;
+	width: 33%;
+	min-width: 100px;
+	height: 30px;
+	text-align: center;
+	background: white;
+	border: 1px solid #888;
+	border-top: none;
+	z-index: 10;
+}
+
+#chart_veil img {
+	vertical-align: middle;
+}
