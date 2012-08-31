@@ -20,10 +20,10 @@
 			<div id="header">
 				<div id="menu">
 					<ul>
-						@getMenuItem(routes.Application.index.toString(),"Home")
-						@getMenuItem(routes.Nodes.listNodeConfig.toString(),"Data")
-						@getMenuItem(routes.Nodes.list.toString(),"Nodes")
-						<li><a href="#">Sensors</a></li>
+						@getMenuItem(routes.Application.index.toString(),"<img src='"+routes.Assets.at("images/home.png")+"'> Home")
+						@getMenuItem(routes.Nodes.listConfigs.toString(),"<img src='"+routes.Assets.at("images/chart.png")+"'> Data")
+						@getMenuItem(routes.Nodes.list.toString(),"<img src='"+routes.Assets.at("images/sensor.png")+"'> Nodes")
+						@getMenuItem(routes.Application.configuration.toString(),"<img src='"+routes.Assets.at("images/preferences.png")+"'> Config")
 					</ul>
 				</div>
 			</div>
@@ -33,7 +33,7 @@
 	    	</div>
 	    	
 	    	<div id="footer">
-	    		<small>copyright notice</small>
+	    		<small>copyright &copy; Miguel Hermo Serans</small>
 	    	</div>
     	</div>
     </body>

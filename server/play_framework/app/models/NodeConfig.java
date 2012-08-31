@@ -59,12 +59,21 @@ public class NodeConfig extends Model {
 	  return sb.toString();
   }
   
+  
+  
   @Override
   /**
    * Creates a "Node" if it doesn't already exist
    */
   public void save(){
+	  System.out.println("Saving N.Config");
 	  Node n = Node.find.byId(this.deviceUid);
+	  
+	  for(SensorConfig sc : this.sensorConfigs) {
+		  if(SensorType.find.byId(sc.type.ref)==null)
+			  sc.type.save();
+	  }
+	  
 	  if(n==null) {
 		  n = new Node();
 		  n.id = deviceUid;

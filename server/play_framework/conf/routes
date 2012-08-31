@@ -4,23 +4,35 @@
 
 # Home page
 GET     /                           		controllers.Application.index()
+GET		/config							    controllers.Application.configuration()
 
 # Nodes
-GET 	/data/list/	  		    	        controllers.Nodes.listNodeConfig()
-GET		/nodes/list/						controllers.Nodes.list()
+GET 	/data/list 	  		    	        controllers.Nodes.listConfigs()
+GET		/nodes/list 						controllers.Nodes.list()
 GET		/nodes/view/:id						controllers.Nodes.view(id:Long)
 GET		/nodes/edit/:id						controllers.Nodes.edit(id:Long)
-POST    /nodes/edit/						controllers.Nodes.modify()
+POST    /nodes/edit 						controllers.Nodes.modify()
 
 # Upload Data File
-POST    /data/upload/yaml   			    controllers.Application.uploadDataFile()
+POST    /data/upload/yaml   			    controllers.Nodes.uploadDataFile()
 
-# Sensors
-GET		/data/sensor/:id			        controllers.Sensors.viewSensorConfig(id:Long)
-GET		/sensors/getCSV/:id.csv				controllers.Sensors.getCSV(id:Long)
+# Sensor Configs
+GET		/config/sensors/add/:ref	        controllers.SensorConfigs.add(ref:String)
+POST	/sensors/modify						controllers.SensorConfigs.modify()
+GET		/sensors/:id			            controllers.SensorConfigs.view(id:Long)
+GET		/sensors/:id/csv      			    controllers.SensorConfigs.getCSV(id:Long, sd:String?=null, ed:String?=null)
+GET		/sensors/:id/yaml					controllers.SensorConfigs.getYaml(id:Long)
+
+# Sensors Types
+# GET 	/config/nodes/samples				controllers.Nodes.listSamples()
+GET 	/config/sensor/types				controllers.SensorTypes.list()
+POST    /config/sensor/types/modify			controllers.SensorTypes.modify()
+GET		/config/sensor/types/new			controllers.SensorTypes.add()
+GET		/config/sensor/types/:ref		    controllers.SensorTypes.view(ref:String)
+GET		/config/sensor/types/:ref/edit		controllers.SensorTypes.edit(ref:String)
 
 #Plots
-GET		/sensors/plot/:id 				    controllers.Charts.viewPlot(id:Long, sd:String?=null , ed:String?=null ,tfl:String?=null )
+GET		/sensors/:id/plot/ 				    controllers.Charts.viewPlot(id:Long, sd:String?=null , ed:String?=null , f:String?=null, w:Integer?=null, h:Integer?=null )
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               		controllers.Assets.at(path="/public", file)

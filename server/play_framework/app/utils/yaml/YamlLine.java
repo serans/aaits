@@ -9,19 +9,58 @@ public class YamlLine {
 	private String value;
 	boolean isNew;
 	private int indentation;
+	private int level;
+	
+	private static 	int curr_indent=0;
+	private static  int curr_level=0;
 
-	public static YamlLine readLine( String line ) {
-		return new YamlLine(line);
+	/**
+	 * Resets the values of the internal counters so that a new file
+	 * can be read without resulting in erroneous level readings when
+	 * using readNextLine
+	 * @see readNextLine
+	 */
+	public static void startNewFile() {
+		YamlLine.curr_indent=0;
+		YamlLine.curr_level=0;
 	}
 	
-	
-	public YamlLine() {
+	/**
+	 * Reads the next file of a yaml file.
+	 * 
+	 * 
+	 * @param line yaml line
+	 * @see startNewFile
+	 * @return
+	 */
+	public static YamlLine readNextLine( String line ) {
+		YamlLine yl = new YamlLine(line);
 		
+		if(curr_indent == yl.indentation) {
+			yl.level=curr_level;
+		}
+		else if(curr_indent < yl.indentation) {
+			++curr_level;
+			curr_indent=yl.indentation;
+			yl.level=curr_level;
+		}
+		else {
+			curr_level = (int) Math.ceil( (curr_level*yl.indentation)/curr_indent);
+			curr_indent = yl.indentation;
+			yl.level = curr_level;
+		}
+		
+		return yl;
 	}
 	
 	public YamlLine(String line) {
 		tokenize(line);
 	}
+	
+	public YamlLine() {
+		
+	}
+	
 
 	/**
 	 * Reads a YAML line and tokenizes it
@@ -88,13 +127,13 @@ public class YamlLine {
 		return isNew;
 	}
 
-	public int getIndentation() {
-		return indentation;
+	public int getLevel() {
+		return level;
 	}
 	
 	public String toString() {
 		String out="";
-		for(int i=0; i<getIndentation();i++) {
+		for(int i=0; i<indentation;i++) {
 			out+=' ';
 		}
 		if(isNew()) out+="-";

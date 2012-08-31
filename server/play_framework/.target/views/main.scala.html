@@ -1,7 +1,5 @@
 @(title: String)(content: Html)
-
 <!DOCTYPE html>
-
 <html>
     <head>
         <title>@title</title>
@@ -11,6 +9,48 @@
         <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
     </head>
     <body>
-        @content
+    	<div id="top-nav">
+    		<b>aaits</b> | <small>arduino-andoid integrated telemonitoring system</small>
+    	</div>
+    	
+    	
+    	
+    	<div id="content">
+    	
+			<div id="header">
+				<div id="menu">
+					<ul>
+						@getMenuItem(routes.Application.index.toString(),"<img src='"+routes.Assets.at("images/home.png")+"'> Home")
+						@getMenuItem(routes.Nodes.listConfigs.toString(),"<img src='"+routes.Assets.at("images/chart.png")+"'> Data")
+						@getMenuItem(routes.Nodes.list.toString(),"<img src='"+routes.Assets.at("images/sensor.png")+"'> Nodes")
+						@getMenuItem(routes.Application.configuration.toString(),"<img src='"+routes.Assets.at("images/preferences.png")+"'> Config")
+					</ul>
+				</div>
+			</div>
+			
+			<div id="main_content">
+	    		@content
+	    	</div>
+	    	
+	    	<div id="footer">
+	    		<small>copyright &copy; Miguel Hermo Serans</small>
+	    	</div>
+    	</div>
     </body>
 </html>
+
+@getMenuItem(link:String, title:String)= @{
+	def rqst = request().path().toString().toLowerCase().split("/");
+	def lnk  = link.toLowerCase().split("/");
+	
+	def r = if(rqst.length>0) 1 else 0;
+	def l = if(lnk.length>0)  1 else 0;
+	
+	def xor(x: Boolean, y: Boolean) = (x || y) && !(x || y);
+	var cssClass = "";
+	
+	if( (r==0 && l==0) || (r>0 && l>0 && rqst(r).equals(lnk(l)))) {
+		cssClass = "class=active"
+	}
+	Html("<li "+cssClass+" ><a href='"+link+"'>"+title+"</a></li>")
+}

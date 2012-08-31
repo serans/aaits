@@ -21,7 +21,6 @@ public class YamlInterpreter {
 	Date StartTime;
 	
 	int state;
-	int curr_indent;
 	
 	final int YML_ROOT=0;
 	final int YML_SENSOR=1;
@@ -53,14 +52,17 @@ public class YamlInterpreter {
 	private void reset(){
 		nc = new NodeConfig();
 		state = YML_ROOT;
-		curr_indent=0;
+		YamlLine.startNewFile();
 	}
 	
+	
+	
 	private void interpretateLine(String line) throws ParseException {
-		YamlLine yl = YamlLine.readLine(line);
 		
-		if(yl.getIndentation()==0 && state!=CSV_DATA) state=YML_ROOT;
-	    if(yl.getIndentation()==1) if(state==YML_PARAM || state==YML_INIT || state==YML_ACTION ) state=YML_SENSOR;
+		YamlLine yl = YamlLine.readNextLine(line);
+		
+		if(yl.getLevel()==0 && state!=CSV_DATA) state=YML_ROOT;
+	    if(yl.getLevel()==1) if(state==YML_PARAM || state==YML_INIT || state==YML_ACTION ) state=YML_SENSOR;
 	    
 	    switch(state) {
 	        case YML_ROOT:
@@ -71,12 +73,20 @@ public class YamlInterpreter {
 	              
 	        case YML_SENSOR:
 	            readSensor(yl);
-	            if( yl.getKey().equals("params") ) { state = YML_PARAM; }
+	            if( yl.getKey().equals("trans_param") ) { state = YML_PARAM; }
 	            break;
+	            
+	        case YML_PARAM:
+	        	readParams(yl);
+	        	break;
 	              
 	        case CSV_DATA:
 	       	    readCSVData(line);
 	      }
+	}
+	
+	private void readParams (YamlLine yl) {
+		//System.out.println(yl);
 	}
 	
 	private void readCSVData(String line) {
@@ -133,6 +143,9 @@ public class YamlInterpreter {
 	    	sc.pin = Integer.parseInt(yl.getValue());
 	    }else if( yl.getKey().equals("steps") ) { 
 	    	sc.steps = Integer.parseInt(yl.getValue());
+	    }else if( yl.getKey().equals("ref") ) {
+	    	sc.type = new SensorType();
+	    	sc.type.ref = yl.getValue();
 	    }
 	}
 }

@@ -54,28 +54,9 @@ public class Application extends Controller {
 	public static Result index() {
 		return ok(views.html.index.render());
 	}
-	
 
-	
-	public static Result uploadDataFile() {
-		MultipartFormData body = request().body().asMultipartFormData();
-		File f = body.getFiles().get(0).getFile();
-		YamlInterpreter yi = new YamlInterpreter();
-		try {
-			NodeConfig nc = yi.readDataFile(f.getAbsolutePath());
-			NodeConfig ncDB = NodeConfig.findConfiguration(nc);
-			if(ncDB != null) {
-				ncDB.save();
-			} else {
-				nc.save();
-			}
-			//return ok(nc.toYaml());
-			//nc.save();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return redirect(routes.Nodes.listNodeConfig());
+	public static Result configuration() {
+		//return ok(views.html.config_index.render());
+		return redirect(routes.SensorTypes.list());
 	}
 }
