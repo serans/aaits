@@ -1,0 +1,23 @@
+@(ref:String, stForm :Form[SensorType])
+
+@import helper._
+
+@main("Edit sensor type"){
+
+	<h1>@if(ref==null) { Add Sensor Type } else { Edit @ref }</h1>
+	@form(routes.SensorTypes.modify()) {
+		<fieldset>
+			@if(ref==null) {
+            	@inputText(stForm("ref"), '_label -> "Reference" )
+           	} else {
+           		<input type="hidden" name="ref" value="@ref">
+           	}
+            @inputText(stForm("description"), '_label -> "Description")
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" value="Save" class="btn primary"> or 
+            <a href="@routes.SensorTypes.list()" class="btn">Cancel</a> 
+        </div>
+	}
+}

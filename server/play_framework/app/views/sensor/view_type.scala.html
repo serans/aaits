@@ -1,0 +1,37 @@
+@( st:SensorType )
+
+@main("Sensor Type") {
+	<h1>@st.ref</h1>
+	<div>@st.description</div>
+	<a href="@routes.SensorTypes.edit(st.ref)" class="btn">Edit Description</a>
+	
+	<div style="margin-top:20px">
+	<b>List of configurations:</b>
+	@if(st.sensorConfigs.size()>0) {
+		<table>
+			<th>Name</th>
+			<th>Deployment</th>
+			<th>&nbsp;</th>
+		@for( sc <- st.sensorConfigs ) {
+			<tr>
+				<td>@sc.name</td>
+				@if(sc.isSample) {
+					<td>(sample configuration)</td> 
+				} else {
+					<td>UID_@sc.nodeConfig.id : @sc.name <a href="@routes.SensorConfigs.view(sc.id)" class="btn">View</a></td>
+				}
+				<td>
+					@if(sc.isSample) {
+					<a href="" class="btn">Edit</a>
+					}
+					<a href="@routes.SensorConfigs.getYaml(sc.id)" class="btn">Get YAML</a>
+				</td>
+			</tr>
+		}
+		</table>
+	} else {
+		Not used
+	}
+	</div>
+	<a href="@routes.SensorConfigs.add(st.ref)" class="btn">Add Configuration</a>
+}

@@ -1,0 +1,32 @@
+@(deployments: List[NodeConfig])
+
+@import helper._
+
+@main("Received Data") {
+	<h1>Data</h1>
+	@form(action = routes.Nodes.uploadDataFile, 'enctype -> "multipart/form-data") {
+	    Upload Data File:
+	    <input type="file" name="Data File"><input type="submit">
+	}
+	
+	@if(deployments.size()>0) {
+		<table>
+		<th>UID</th><th>Deployed as</th><th>Sensors</th>
+		@for( d <- deployments) {
+			<tr>
+			<td>@d.deviceUid</td>
+			<td>@d.name</td>
+			<td class="links">
+				@for( s <- d.sensorConfigs ) {
+					<a href="@routes.SensorConfigs.view(s.id)">
+					@s.getScreenName()
+					</a>
+				}
+			</td>
+			</tr>
+		}
+		</table>
+	}
+
+	
+}

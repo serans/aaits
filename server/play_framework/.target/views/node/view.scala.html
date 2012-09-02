@@ -1,0 +1,45 @@
+@(n: Node)
+
+@import helper._
+
+@main("Node "+n.name) {
+	<h1>Node @n.id</h1>
+	<div class="col_33">
+		
+		<h2>Info</h2>
+		<dl>
+			<dt>name:</dt><dd>@n.name</dd>
+			<dt>description:</dt><dd>
+				@if(n.description==null) {
+					no description
+				}else{
+					@n.description
+				}</dd>
+		</dl>
+		<a href="@routes.Nodes.edit(n.id)" class="btn" >edit</a>
+	</div>
+	
+	<div class="col_66">
+	<h2>Deployments</h2>
+	@if(n.nodeConfigs.size()==0) {
+		no data
+	} else {
+		<table>
+		<th>Deployed as</th><th>Sensors</th>
+		@for( d <- n.nodeConfigs) {
+			<tr>
+			<td>@d.name</td>
+			<td class="links">
+				
+				@for( s <- d.sensorConfigs ) {
+					<a href="@routes.SensorConfigs.view(s.id)">
+					@s.getScreenName()
+					</a>
+				}
+			</td>
+			</tr>
+		}
+		</table>
+	}
+	</div>
+}

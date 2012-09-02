@@ -1,0 +1,20 @@
+@(id:Long, nForm :Form[Node])
+
+@import helper._
+
+@main("Edit node"){
+
+	<h1>@if(id==null) { Create } else { Edit } Node</h1>
+	@form(routes.Nodes.modify()) {
+		<input type="hidden" name="id" value="@id">
+		<fieldset>
+            @inputText(nForm("name"), '_label -> "Name")
+            @inputText(nForm("description"), '_label -> "Description")
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" value="Save" class="btn primary"> or 
+            <a href="@routes.Nodes.view(id)" class="btn">Cancel</a> 
+        </div>
+	}
+}

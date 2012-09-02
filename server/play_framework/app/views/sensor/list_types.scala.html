@@ -1,0 +1,29 @@
+@(tl:List[SensorType])
+
+@import helper._
+
+@main("Nodes List") {
+<h1>Sensor Configuration</h1>
+@if(tl.size() > 0 ) {
+<h2>list of sensors</h2>
+	<table>
+		<th>ref</th>
+		<th>description</th>
+		<th class="links">&nbsp;</th>
+		<th class="links">&nbsp;</th>
+	@for( t <- tl ) {
+		<tr>
+			<td>@t.ref</td>
+			<td>@t.description</td>
+			<td class="links">
+				<a href="@routes.SensorTypes.edit(t.ref)">Edit</a>
+			</td>
+			<td class="links">	
+				<a href="@routes.SensorTypes.view(t.ref)">View</a>
+			</td>
+		</tr>
+	}
+	</table>	
+}
+<div style="float:right"><a href="@routes.SensorTypes.add()" class="btn" >Add New Type</a></div>
+}

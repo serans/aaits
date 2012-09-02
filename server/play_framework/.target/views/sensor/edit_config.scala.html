@@ -1,0 +1,32 @@
+@(id:Long, ref: String, nForm : Form[SensorConfig])
+
+@import helper._
+
+@main("Sensor Config") {
+	<h1>@if(id==null) {Create} else {Edite} @ref Configuration</h1>
+	
+	@form(routes.SensorConfigs.modify()) {
+		<input type="hidden" name="type.ref" value="@ref">
+		<fieldset>
+            @select(
+                nForm("className"), 
+                options(SensorConfig.classes), 
+                '_label -> "Class", '_default -> "-- Choose a class --",
+                '_showConstraints -> false
+            )
+            
+            @inputText(nForm("name"), '_label -> "Name")
+			@inputText(nForm("description"), '_label -> "Description")            
+            @inputText(nForm("units"), '_label -> "Units")
+            
+            <!-- Steps, pin and internal_id will be set when adding to sensor -->
+            
+            <input type="hidden" name="isSample" value="1">
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" value="Save" class="btn primary"> or 
+            <a href="@routes.SensorTypes.view(ref)" class="btn">Cancel</a> 
+        </div>
+	}
+}

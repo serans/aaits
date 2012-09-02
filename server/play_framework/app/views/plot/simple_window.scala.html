@@ -1,0 +1,145 @@
+@(sc_id: Long, start:Long, end:Long)
+
+<div class="plot_window">
+	<div class="plot_toolbar">
+		<ul>
+			<li><a title="scroll left" href="javascript:displace(-4)"><img src="@routes.Assets.at("images/arrow_left.png")" ></a></li>
+			<li><a title="scroll right" href="javascript:displace(+4)"><img src="@routes.Assets.at("images/arrow_right.png")" ></a></li>
+			<li class="separator">&nbsp;</li>
+			<li><a title="show all data" href="javascript:reset()"><img src="@routes.Assets.at("images/zoom.png")" ></a></li>
+			<li><a title="zoom in" href="javascript:zoom(+4)"><img src="@routes.Assets.at("images/zoom_in.png")" ></a></li>
+			<li><a title="zoom out" href="javascript:zoom(-4)"><img src="@routes.Assets.at("images/zoom_out.png")" ></a></li>
+			<li class="separator">&nbsp;</li>
+			<li><a title="filters" href="javascript:showTools('filters')" ><img src="@routes.Assets.at("images/eye.png")" ></a></li>
+			<li class="separator">&nbsp;</li>
+			<li><a title="filters" href="javascript:showTools('downloads')" ><img src="@routes.Assets.at("images/download.png")" ></a></li>
+		</ul>
+		
+		<div class="tools_extension" id="filters">
+			<div style="padding:10px">
+				
+				<b>Filters:</b>
+				<ul>
+					<li><input type="checkbox" id="HDAT" /> Hide Original Data</li>
+					<li><input type="checkbox" id="SMA" /> Simple Moving Average <input id="SMAParam" type="text" style="width:20px" value="2" >
+					<li><input type="checkbox" id="CA"  /> Cummulative Average
+				</ul>
+			</div>
+			
+			<a href="javascript:reloadChart();$('#filters').slideUp()" class="col_50" >Update</a>
+			<a href="javascript:$('#filters').slideUp()" class="col_50 cancel" >Cancel</a>
+			
+		</div>
+		
+		<div class="tools_extension" id="downloads">
+			<div style="padding:10px;display:block">
+				<b>Download CSV</b>
+			</div>
+			<a href="@routes.SensorConfigs.getCSV(sc_id)" class="col_33" >All Data</a>
+			<a href="javascript:getPlotsCSV()" class="col_33" >Plot's Data</a>
+			<a href="javascript:getPlotsCSV()" class="col_33 cancel" >Cancel</a>
+		</div>
+		
+	</div>
+	
+	<div id="chart_wrap">
+		<div id="chart_veil">
+			loading...<img src="@routes.Assets.at("images/spinner.gif")">
+		</div>
+		<div id="chart_plot" style="width:100%">
+			<img id="chart" src="" />
+		</div>
+	</div>
+</div>
+
+<script type="text/javaScript">
+	
+	var initStart = @start;
+	var initEnd   = @end;
+	
+	var start   = @start;
+	var end     = @end;
+	var sc_id   = @sc_id;
+	var img_src = "@routes.Charts.viewPlot(sc_id)";
+	
+	hideTools();
+	
+	reloadChart();
+	
+	function hideTools() {
+		$("#filters").hide();
+		$("#downloads").hide();
+	}
+	
+	function showTools( section ) {
+		$("#filters").slideUp();
+		$("#downloads").slideUp();
+		$("#"+section).slideDown();
+	}
+	
+	$("#chart").load( function(){
+		$("#chart")[0].style.opacity = 1
+		$("#chart")[0].style.filter = 'alpha(opacity=100)';
+		$("#chart_veil").hide();
+	});
+	
+	function reloadChart() {
+		//calculate url
+		var src = img_src+"?sd="+start+"&ed="+end;
+		if(readFilters()!="") src+="&f="+readFilters();
+		src+="&w="+$("#chart_plot").width();
+		//show preloader
+		$("#chart_veil").show();
+		$("#chart")[0].style.opacity = 0.5
+		$("#chart")[0].style.filter = 'alpha(opacity=50)';
+		
+		//change url
+		$("#chart")[0].src = src;
+		
+	}
+	
+	function reset() {
+		start = initStart;
+		end   = initEnd;
+		reloadChart();
+	}
+	
+	function zoom(magnitude) {
+		diff = Math.round((end-start)/magnitude)
+		start = start+diff
+		end = end-diff
+		reloadChart()
+	}
+	
+	function displace(amount) {
+		diff = Math.round((end-start)/amount)
+		start = start+diff
+		end = end+diff
+		reloadChart()
+	}
+	
+	function getPlotsCSV() {
+		window.location="@routes.SensorConfigs.getCSV(sc_id)?sd="+start+"&ed="+end;
+	}
+	
+	function readFilters() {
+		var filterStr="";
+		
+		if($("#HDAT").attr('checked')!=undefined) {
+			filterStr+="FHIDE,";
+		}
+		if($("#CA").attr('checked')!=undefined) {
+			filterStr+="CA,";
+		}
+		if($("#SMA").attr('checked')!=undefined) {
+			var param = parseInt($("#SMAParam").attr("value"));
+			if(param == NaN || param<2) {
+				alert("Invalid SMA parameter (must be an integer greater than 2)")
+			} else {
+				filterStr+="SMA:"+param+",";
+			}
+		}
+		return filterStr;
+	}
+	
+</script>

@@ -1,0 +1,25 @@
+@(nodes: List[Node])
+
+@import helper._
+
+@main("Nodes") {
+	<h1>Nodes List</h1>
+	@if(nodes.size()==0) {
+		no nodes
+	} else {
+		<table>
+			<th>UID</th>
+			<th>Name</th>
+			<th>&nbsp</th>
+		@for(n <- nodes) {
+			<tr>
+				<td>@n.id</td>
+				<td>@n.name</td>
+				<td class="links"><a href="@routes.Nodes.view(n.id)">view</a></td>
+			</tr>
+		}
+		</table>
+	}
+
+	
+}

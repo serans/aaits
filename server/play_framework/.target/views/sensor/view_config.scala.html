@@ -1,0 +1,29 @@
+@(sc: SensorConfig, charSection: String)
+
+@import helper._
+
+@main("Sensor "+sc.getScreenName()) {
+	<table>
+		<th>Name</th>
+		<th>Ref</th>
+		<th>Class</th>
+		<th>Pin</th>
+		<th title="Sampling Period">T (seconds)</th>
+		<th>Units</th>
+		<tr>
+			<td>@if(sc.name!=null) { @sc.name } else { - } </td>
+			<td><a href="@routes.SensorTypes.view(sc.`type`.ref)">@(sc.`type`.ref)</a></td>
+			<td>@sc.className</td>
+			<td>@if(sc.pin!=null) { @sc.pin } else { - } </td>
+			<td title="@sc.steps Steps">@sc.getSamplingPeriod()</td>
+			<td>@sc.units</td>
+		</th>
+	</table>
+	@if(sc.isSample) {
+		This is a sample sensor
+	}
+	
+	<div id="charSection">
+		@Html(charSection)
+	</div>
+}
