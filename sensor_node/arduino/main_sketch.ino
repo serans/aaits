@@ -4,7 +4,7 @@
 #include <TimerOne.h>
 #include <MemoryFree.h>
 
-#include <Pfc.h>
+#include <Aaits.h>
 
 #define EEPROM_UID   0
 #define EEPROM_NFILE 1
@@ -79,7 +79,7 @@ void setup() {
    config.onDataConfigChanged = configChanged;
    config.onTick = tick;
 
-   //comm.initialize();
+   comm.initialize();
    Serial.flush();
    config.readFromFile();
       
