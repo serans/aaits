@@ -50,14 +50,14 @@ void Comm::loop() {
                 Serial.print(c);
             }
         }
-    }
+    } 
     
     if( comm_state == COMM_SENDING_STRING ) {
         if( getLine == NULL) endTransmission();
         else {
             Serial.print(getLine());
         }
-    }
+    } 
 
     if(Serial.available()) {
       readChar(Serial.read());

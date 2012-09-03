@@ -78,7 +78,7 @@ void Sensor::writeDescriptionToSd( SdFile *file  ) {
       if(transform->numParams()>0) {
           sdprintP(file, p_indent);
           sdprintP(file, p_trans_param);
-          sdPrintP(file, p_colon);
+          sdprintP(file, p_colon);
           file->println();
           for(byte i=0; i<transform->numParams(); i++) {
               sdprintP(file, p_indent);
