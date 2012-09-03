@@ -1,6 +1,11 @@
 package aaits.tablet.activities;
 
 import android.content.SharedPreferences;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,6 +17,7 @@ import aaits.tablet.bluetooth.BluetoothCommService;
 import aaits.tablet.bluetooth.DeviceListActivity;
 import aaits.tablet.models.*;
 import aaits.tablet.yaml.YamlInterpreter;
+import aaits.tablet.yaml.YamlLine;
 
 import aaits.tablet.R;
 import android.app.Activity;
@@ -21,6 +27,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -45,6 +52,7 @@ public class MainActivity extends Activity {
     public static final int COMM_READING_CONFIG   = 2;
     public static final int COMM_READING_DATAFILE = 3;
     public static final int COMM_SENDING_CONFIG   = 4;
+    public static final int COMM_READING_UID      = 5;
     
     // Message types sent from the BluetoothChatService Handler
     public static final int MESSAGE_STATE_CHANGE = 1;
@@ -105,6 +113,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
     }
     
+    /**
+     * 
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -173,12 +184,23 @@ public class MainActivity extends Activity {
                 if(D) Log.i(TAG, "SENT:"+new String((byte []) msg.obj));
                 break;
             case MESSAGE_READ:
-            	String str = (String) msg.obj;
             	
-            	switch(MainActivity.comm_state) {
+            	String str = (String) msg.obj;
+        		boolean EOT=false;
+        		
+        		//detect EOT
+        		if(str.length()>0 && str.charAt(str.length()-1)==0x04) {
+        			EOT=true;
+        			if(str.length()==1) 
+        				str="";
+        			else
+        				str=str.substring(0, str.length()-2);
+        		}
+            	
+            	switch(comm_state) {
             	
             	//ADD data files to list
-            	case MainActivity.COMM_READING_FILEINFO:
+            	case COMM_READING_FILEINFO:
 	            	Pattern data_pattern = Pattern.compile("^[0-9]+\\.YML$");
 	            	Matcher m = data_pattern.matcher(str);
 	            	while(m.find()) {
@@ -187,26 +209,44 @@ public class MainActivity extends Activity {
 	            	break;
 
 	            //interpretate node config 
-            	case MainActivity.COMM_READING_CONFIG:
+            	case COMM_READING_CONFIG:
 	            	try {
 						yi.interpretateLine(str);
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
 	            	break;
+	            	
+            	case COMM_READING_UID:
+            		
+            		YamlLine yl = new YamlLine(str);
+            		if(yl.getKey()!=null && yl.getKey().equals("device_uid")) {
+            			
+            			String number = yl.getValue();
+            			node.setDeviceUid(Long.parseLong(number));
+            			Log.i(TAG,"node uid:"+node.getDeviceUid());
+            		}
+            		break;
             	}
             	
-            	if(str.charAt(str.length()-1)==0x04) {
-            		switch (MainActivity.comm_state) {
-            		case MainActivity.COMM_READING_FILEINFO:
+            	if(EOT) {
+            		switch (comm_state) {
+            		case COMM_READING_FILEINFO:
+            			Log.i(TAG,"EOT: fileinfo");
             			yi.reset();
             			mBTCommService.println("GET CONFIG.YML ");
-            			MainActivity.comm_state = MainActivity.COMM_READING_CONFIG;
+            			comm_state = COMM_READING_CONFIG;
             			progress.setMessage("reading configuration...");
             			break;
-            		case MainActivity.COMM_READING_CONFIG:
+            		case COMM_READING_CONFIG:
+            			Log.i(TAG,"EOT: config");
             			MainActivity.node = yi.getNodeConfig();
-            			if(D) Log.i(TAG, MainActivity.node.toYaml());
+            			yi.reset();
+            			mBTCommService.println("GET device_uid ");
+            			comm_state = COMM_READING_UID;
+            			break;
+            		case COMM_READING_UID:
+            			Log.i(TAG,"EOT: uid");
             			progress.dismiss();
             			Intent myIntent = new Intent(MainActivity.this, DataMenuActivity.class);
             	        startActivityForResult(myIntent, 0);
@@ -261,16 +301,27 @@ public class MainActivity extends Activity {
     }
     
     public void onSynchClicked(View v){
-    	/*
-    	Intent myIntent = new Intent(v.getContext(), DataMenuActivity.class);
-        startActivityForResult(myIntent, 0);
-        */
+        //startActivity( new Intent(v.getContext(), ConfigActivity.class) );
+    	File sdRootDir = Environment.getExternalStorageDirectory();
+    	File dataDir = new File(sdRootDir,"aaits_data");
+    	dataDir.mkdir();
+    	BufferedWriter fileOutBuffer;
     	
+    	File outFile = new File(dataDir, "android_test.txt");
+	    FileWriter fileWriter;
+		try {
+			fileWriter = new FileWriter(outFile);
+			fileOutBuffer = new BufferedWriter(fileWriter);
+			fileOutBuffer.write("Hola mundo");
+			fileOutBuffer.close();
+		} catch (IOException e) {
+			Toast.makeText(MainActivity.this, "Can't write to SD card. Download cancelled", Toast.LENGTH_SHORT).show();
+		}
+		
     }
     
     public void onPreferencesClicked(View v) {
-    	Intent prefIntent = new Intent(this, PreferencesActivity.class);
-        startActivityForResult(prefIntent, REQUEST_CONNECT_DEVICE);
+        startActivity(new Intent(this, PreferencesActivity.class));
     }
     
     // GET SET

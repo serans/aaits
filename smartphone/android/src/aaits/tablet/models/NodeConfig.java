@@ -58,6 +58,13 @@ public class NodeConfig {
 		  }
 		  return null;
 	 }
+	
+	SensorConfig findSensorByListName(String listName){
+		for( SensorConfig sc: sensorConfigs ) {
+			if(sc.getListName().equals(listName)) return sc;
+		}
+		return null;
+	}
 
 	/* GETTERs / SETTERs */
 	

@@ -80,7 +80,7 @@ public class YamlLine {
 		for (int i = 0; i < line.length(); i++) {
 			char c = line.charAt(i);
 
-			if (c == '\0' || c == '\n')
+			if (c == '\0' || c == '\n' || c=='\r' || c==0x04)
 				return;
 
 			if (c == '#')

@@ -97,6 +97,17 @@ public class SensorConfig {
 			return name;
 	}
 	
+	/**
+	 * Returns a name to be shown on lists 
+	 */
+	public String getListName() {
+		if (name == null) {
+			return internal_id+":"+className+"("+ref+")";
+		} else {
+			return internal_id+":"+name+"("+ref+")";
+		}
+	}
+	
 	/* GETTERs/SETTERs */
 
 	public Long getId() {
