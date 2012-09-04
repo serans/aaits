@@ -237,11 +237,11 @@ void Config::configureSensor() {
     if( strcmp(yr.line.key,"trans_func")==0) {
         if(curr_sensor==NULL) internalError();
         else {
-            if(curr_sensor->transform!=NULL) {
-                delete(curr_sensor->transform);
-                curr_sensor->transform=NULL;
+            if(curr_sensor->getTransform()!=NULL) {
+                delete(curr_sensor->getTransform());
+                curr_sensor->setTransform(NULL);
             } else {
-                curr_sensor->transform = new TransformFunction(yr.line.value);
+                curr_sensor->setTransform(new TransformFunction(yr.line.value));
             }
         }
     }
@@ -250,8 +250,8 @@ void Config::configureSensor() {
 
 void Config::configureParam() {
    if(curr_sensor != NULL)
-     if(curr_sensor->transform != NULL) {
-       curr_sensor->transform->addParam(atof(yr.line.key));
+     if(curr_sensor->getTransform() != NULL) {
+       curr_sensor->getTransform()->addParam(atof(yr.line.key));
      }
 
 }
@@ -272,7 +272,7 @@ void Config::configureParam() {
 void Config::readConfigChar(char c) {
 
   if( yr.readChar( c )) {
-
+            
       //first we calculate state changes depending on indentation level
       if(yr.line.indent_level==0) yml_state=YML_ROOT;
       if(yr.line.indent_level==1) if( yml_state==YML_PARAM ) yml_state=YML_SENSOR;
@@ -297,16 +297,9 @@ void Config::readConfigChar(char c) {
           case YML_PARAM:
               configureParam();
       }
-
   }
 }
 
-/**
- * @brief returns a YAML text describing the current data configuration
-
-char* Config::getHeader() {
-    
-} */
 
 /**
   * @brief used to inform Config of the result of the BT configuration commands

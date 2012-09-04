@@ -17,11 +17,12 @@ prog_char p_newitem[]    PROGMEM = "  -";
 Sensor::Sensor()  {
     ticks = 0;
     steps = 1;
-    pin = 0;
-    id=0;
+    pin   = 0;
+    id    = 0;
     setName("generic_sensor");
     setUnits("no_units");
     paused = true;
+    transform = NULL;
 }
 
 Sensor::~Sensor() {
@@ -70,7 +71,7 @@ void Sensor::writeDescriptionToSd( SdFile *file  ) {
       file->println(pin);
     }
     
-    if(transform!=NULL) {
+    if(transform != NULL) {
       sdprintP(file, p_indent);
       sdprintP(file, p_trans_func); 
       sdprintP(file, p_colon);

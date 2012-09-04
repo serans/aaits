@@ -1,8 +1,7 @@
 #include "MemorySensor.h"
 #include <Arduino.h>
 
-MemorySensor::MemorySensor() {
-    Sensor::Sensor();
+MemorySensor::MemorySensor():Sensor() {
     strcpy(name,"SRAM");
     strcpy(units,"bytes");
 }
@@ -15,7 +14,6 @@ boolean MemorySensor::action() {
     
 }
 
-/** @brief Wrapper for getHeader */
 void MemorySensor::writeDescriptionToSd( SdFile *file  ) {
     Sensor::writeDescriptionToSd( file );
 }

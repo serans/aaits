@@ -1,7 +1,6 @@
 #include "AnalogSensor.h"
 
-AnalogSensor::AnalogSensor() {
-    Sensor::Sensor();
+AnalogSensor::AnalogSensor():Sensor() {
     setName("analog_sensor");
     setUnits("5/1023 Volts");
 };

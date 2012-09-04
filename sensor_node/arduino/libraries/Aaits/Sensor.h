@@ -39,6 +39,7 @@ class Sensor {
         boolean paused;
         
         inline virtual boolean action();
+        TransformFunction *transform;
         
     public:
         Sensor();
@@ -50,8 +51,6 @@ class Sensor {
         virtual void pause() {paused = true;};
         
         virtual void writeDescriptionToSd(SdFile *file);
-        
-        TransformFunction *transform;
         
         //GETTER-SETTER
         virtual char *getClassName() {return "Generic";};
@@ -67,6 +66,7 @@ class Sensor {
         unsigned int  getSteps() {return steps;};
         char * getRef()          {return ref;};
         int getMeasurement()     {return measured_value;};
+        TransformFunction *getTransform() {return transform;};
 
         virtual void setPin(byte pin);
         void setId(byte id)            {this->id=id;}; 
@@ -74,6 +74,7 @@ class Sensor {
         void setUnits(char *units) {strcpy(this->units,units);};
         void setSteps(unsigned int st) {this->steps=st;};
         void setRef(char * ref)    {strcpy(this->ref,ref);};
+        void setTransform(TransformFunction *tf) { this->transform=tf; }
 };
 
 

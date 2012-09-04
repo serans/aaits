@@ -42,6 +42,7 @@ void Comm::loop() {
         if(file->isOpen()) {
             char c = file->read();
             if(c<0) {
+                Serial.flush();
                 file->close();
                 
                 delete(file);
