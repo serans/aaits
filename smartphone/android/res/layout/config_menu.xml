@@ -60,9 +60,17 @@
     </ListView>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btnAddSensor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="onAddSensorClick"
         android:text="Add Sensor" />
 
+    <Button
+        android:id="@+id/btnApply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onApllyClick"
+        android:text="Apply Configuration" />
+    
 </LinearLayout>

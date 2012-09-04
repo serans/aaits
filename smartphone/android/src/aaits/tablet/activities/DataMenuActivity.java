@@ -32,6 +32,8 @@ public class DataMenuActivity extends Activity {
 	private static final int STATE_DOWNLOADING = 1;
 	private static final int STATE_DELETING = 2;
 	
+	private Button btnDownload;
+	
 	File dataDir;
 	BufferedWriter fileOutBuffer;
 	
@@ -48,6 +50,8 @@ public class DataMenuActivity extends Activity {
 		dataDir.mkdir();
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.data_menu);
+        
+        btnDownload =  (Button) findViewById(R.id.btn_download);
     }
 	
 	
@@ -177,8 +181,9 @@ public class DataMenuActivity extends Activity {
         				if(!deleteNextFile()) {
         					state=STATE_NONE; //STATE_DELETING
         					progress.dismiss();
-        					Button b = (Button) findViewById(R.id.btn_download);
-        					b.setClickable(false);
+        					
+        					btnDownload.setClickable(false);
+        					btnDownload.setEnabled(false);
         				}
         			}
         			break;

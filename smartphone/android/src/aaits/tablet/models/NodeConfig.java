@@ -33,8 +33,7 @@ public class NodeConfig {
 	 */
 	public String toYaml() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("id:" + deviceUid + "\n");
-		sb.append("name:" + name + "\n");
+		sb.append("device_name:" + name + "\n");
 		if (description != null)
 			sb.append("description:" + description + "\n");
 		sb.append("sampling_period:" + samplingPeriod + "\n");
@@ -59,7 +58,7 @@ public class NodeConfig {
 		  return null;
 	 }
 	
-	SensorConfig findSensorByListName(String listName){
+	public SensorConfig findSensorByListName(String listName){
 		for( SensorConfig sc: sensorConfigs ) {
 			if(sc.getListName().equals(listName)) return sc;
 		}

@@ -83,7 +83,8 @@ public class YamlInterpreter {
 	}
 	
 	private void readParams (YamlLine yl) {
-		//System.out.println(yl);
+		SensorConfig sc = nc.getSensorConfigs().get(nc.getSensorConfigs().size()-1);
+		sc.setTransform(sc.getTransform()+yl.getKey()+",");
 	}
 	
 	private void readCSVData(String line) {
@@ -142,6 +143,8 @@ public class YamlInterpreter {
 	    	sc.setSteps (Integer.parseInt(yl.getValue()));
 	    }else if( yl.getKey().equals("ref") ) {
 	    	sc.setRef(yl.getValue());
+	    }else if( yl.getKey().equals("trans_func")) {
+	    	sc.setTransform(yl.getValue()+":");
 	    }
 	}
 	

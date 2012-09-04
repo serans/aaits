@@ -18,6 +18,7 @@ public class SensorConfig {
 	private String ref;
 	private NodeConfig nodeConfig;
 	private List<Measurement> measurements;
+	private String transform;
 	
 	public String toYaml() {
 		StringBuilder sb = new StringBuilder();
@@ -31,6 +32,15 @@ public class SensorConfig {
 			sb.append("   ref:"+ref+"\n");
 		sb.append("   units:" + units + "\n");
 		sb.append("   steps:" + steps + "\n");
+		if(transform!=null){
+			StringTokenizer transFunc = new StringTokenizer(transform, ":");
+			sb.append("   trans_func:"+transFunc.nextToken()+"\n");
+			StringTokenizer transFuncP = new StringTokenizer(transFunc.nextToken(),",");
+			sb.append("   trans_param:\n");
+			while(transFuncP.hasMoreTokens()) {
+				sb.append("     -"+transFuncP.nextToken()+"\n");
+			}
+		}
 		return sb.toString();
 	}
 	
@@ -206,5 +216,12 @@ public class SensorConfig {
 		this.nodeConfig = nodeConfig;
 	}
 	
+	public String getTransform(){
+		return this.transform;
+	}
+	
+	public void setTransform(String str) {
+		transform = str;
+	}
 	
 }

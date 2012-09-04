@@ -3,9 +3,14 @@ package aaits.tablet.activities;
 import android.content.SharedPreferences;
 
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,8 +18,17 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import aaits.tablet.bluetooth.BluetoothCommService;
 import aaits.tablet.bluetooth.DeviceListActivity;
+import aaits.tablet.comm.UploadFileTask;
 import aaits.tablet.models.*;
 import aaits.tablet.yaml.YamlInterpreter;
 import aaits.tablet.yaml.YamlLine;
@@ -26,6 +40,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -85,6 +100,10 @@ public class MainActivity extends Activity {
     public static NodeConfig node;
     public static List<String> dataFiles;
     private YamlInterpreter yi;
+    SharedPreferences settings;
+    
+    String dataDir;
+    String serverUrl;
     
     private ProgressDialog progress;
 
@@ -111,6 +130,13 @@ public class MainActivity extends Activity {
         }
     	
         setContentView(R.layout.main);
+        
+        //disable synch button if no files are to be synched
+        settings = getSharedPreferences(PreferencesActivity.PREFERENCE_FILENAME,MODE_PRIVATE);
+        
+        serverUrl = settings.getString("server_url", "aaits_data");
+        dataDir = settings.getString("data_dir", "aaits_data");
+        
     }
     
     /**
@@ -140,6 +166,21 @@ public class MainActivity extends Activity {
         setTitle(getString(R.string.app_name)+":: main menu");
         if (mBTCommService != null) {
         	mBTCommService.setHandler(mHandler);
+        }
+        
+        checkIfSychIsPossible();
+    }
+    
+    private void checkIfSychIsPossible(){
+    	Button synch = (Button) findViewById(R.id.synchButton);
+        File directory = new File(Environment.getExternalStorageDirectory(),dataDir);
+        
+    	if(!directory.isDirectory() || directory.list().length==0) {
+	    	synch.setClickable(false);
+	    	synch.setEnabled(false);
+        } else {
+        	synch.setClickable(true);
+	    	synch.setEnabled(true);
         }
     }
     
@@ -301,23 +342,19 @@ public class MainActivity extends Activity {
     }
     
     public void onSynchClicked(View v){
-        //startActivity( new Intent(v.getContext(), ConfigActivity.class) );
-    	File sdRootDir = Environment.getExternalStorageDirectory();
-    	File dataDir = new File(sdRootDir,"aaits_data");
-    	dataDir.mkdir();
-    	BufferedWriter fileOutBuffer;
+    	if(D) Log.i(TAG,"starting synch");
+    	File directory = new File(Environment.getExternalStorageDirectory(),dataDir);
     	
-    	File outFile = new File(dataDir, "android_test.txt");
-	    FileWriter fileWriter;
-		try {
-			fileWriter = new FileWriter(outFile);
-			fileOutBuffer = new BufferedWriter(fileWriter);
-			fileOutBuffer.write("Hola mundo");
-			fileOutBuffer.close();
-		} catch (IOException e) {
-			Toast.makeText(MainActivity.this, "Can't write to SD card. Download cancelled", Toast.LENGTH_SHORT).show();
-		}
-		
+    	UploadFileTask uTask = new UploadFileTask();
+    	uTask.setActivity(this);
+    	uTask.setProgressDialog(progress);
+    	uTask.setServerUrl(serverUrl);
+    	uTask.setOnComplete(new UploadFileTask.onCompleteI(){
+    		public void execute(){
+    			checkIfSychIsPossible();
+    		}
+    	});
+    	uTask.execute(directory.listFiles());
     }
     
     public void onPreferencesClicked(View v) {

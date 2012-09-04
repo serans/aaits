@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ConfigActivity" ></activity>
+        <activity android:name=".activities.ConfigSensorActivity" ></activity>
         <activity android:name="aaits.tablet.activities.DataMenuActivity" ></activity>
         <activity android:name="aaits.tablet.activities.PreferencesActivity" ></activity>
         <activity android:name="aaits.tablet.bluetooth.DeviceListActivity"

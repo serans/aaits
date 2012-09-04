@@ -16,6 +16,9 @@ public class PreferencesActivity extends Activity {
     public static final String PREFERENCE_FILENAME = "aaits_preferences";
     private SharedPreferences settings;
     
+    TextView serverName;
+    TextView dataDir;
+    
     @Override 
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -26,17 +29,21 @@ public class PreferencesActivity extends Activity {
     public void onResume() {
     	super.onResume();
     	setTitle(getString(R.string.app_name)+":: preferences");
-    	TextView txt = (TextView) findViewById(R.id.server_name);
+    	
+    	serverName = (TextView) findViewById(R.id.server_name);
+    	dataDir    = (TextView) findViewById(R.id.data_dir);
+    	
     	settings = getSharedPreferences(PREFERENCE_FILENAME,MODE_PRIVATE);
-    	txt.setText(settings.getString("server_url", "http://localhost"));
+    	serverName.setText(settings.getString("server_url", "http://localhost"));
+    	dataDir.setText(settings.getString("data_dir", "aaits_data"));
     }
     
     //Buttons
     public void onSaveClicked(View v){
-    	TextView txt = (TextView) findViewById(R.id.server_name);
     	
     	Editor editor = settings.edit();
-        editor.putString("server_url", txt.getText().toString());              
+        editor.putString("server_url", serverName.getText().toString());
+        editor.putString("data_dir", dataDir.getText().toString());
         editor.commit();
     	
     	goBack();

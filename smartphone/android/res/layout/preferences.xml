@@ -19,6 +19,18 @@
         <requestFocus />
     </EditText>
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SD data directory" />
+
+    <EditText
+        android:id="@+id/data_dir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
