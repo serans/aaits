@@ -53,10 +53,15 @@ public class Charts extends Controller {
 	 * @return Html with the plot window
 	 */
 	public static String plotWindow( Long sensorConfigId) {
+		Long startTimestamp = null;
+		Long endTimestamp = null;
+		
 		SensorConfig sc = SensorConfig.find.byId(sensorConfigId);
 		
-		Long startTimestamp = sc.getFirstMeasurementDate().getTime();  
-		Long endTimestamp	= sc.getLastMeasurementDate().getTime();
+		if(sc.measurements.size()>0) {
+			startTimestamp = sc.getFirstMeasurementDate().getTime();  
+			endTimestamp   = sc.getLastMeasurementDate().getTime();
+		}
 		
 		return views.html.plot.simple_window.render(sensorConfigId, startTimestamp, endTimestamp).toString();
 	}

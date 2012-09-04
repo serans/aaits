@@ -14,7 +14,7 @@ GET		/nodes/edit/:id						controllers.Nodes.edit(id:Long)
 POST    /nodes/edit 						controllers.Nodes.modify()
 
 # Upload Data File
-POST    /data/upload/yaml   			    controllers.Nodes.uploadDataFile()
+POST    /data/upload/yaml   			    controllers.Nodes.uploadDataFile(redirect:Boolean?=false)
 
 # Sensor Configs
 GET		/config/sensors/add/:ref	        controllers.SensorConfigs.add(ref:String)

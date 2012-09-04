@@ -92,7 +92,10 @@ public class YamlInterpreter {
 	private void readCSVData(String line) {
 		
 		StringTokenizer csvLine = new StringTokenizer(line, ";");
-		if(csvLine.countTokens()!=3) return;
+		if(csvLine.countTokens()<3 || csvLine.countTokens()>4) {
+			System.out.println("No CSV data");
+			return;
+		}
 		
 		Measurement m = new Measurement();
 		
@@ -105,8 +108,13 @@ public class YamlInterpreter {
 		//second: id
 		(nc.getSensorConfigbyInternalId(Integer.parseInt(csvLine.nextToken()))).measurements.add(m);
 		
-		//third: measured value
+		//third: value
 		m.value = Float.parseFloat(csvLine.nextToken());
+		
+		//fourth?: rawValue
+		if(csvLine.hasMoreTokens()) {
+			m.rawValue = Float.parseFloat(csvLine.nextToken());
+		}
 	}
 	
 	private void readRoot(YamlLine yl) throws ParseException {

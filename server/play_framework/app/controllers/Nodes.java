@@ -95,8 +95,10 @@ public class Nodes extends Controller {
 		return ok(views.html.node.list_configs.render(nc));
 	}
 	
-	public static Result uploadDataFile() {
+	public static Result uploadDataFile(boolean redirect) {
 		MultipartFormData body = request().body().asMultipartFormData();
+		System.out.println(request().body().toString());
+		
 		File f = body.getFiles().get(0).getFile();
 		YamlInterpreter yi = new YamlInterpreter();
 		try {
@@ -112,6 +114,9 @@ public class Nodes extends Controller {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return redirect(routes.Nodes.listConfigs());
+		if(redirect)
+			return redirect(routes.Nodes.listConfigs());
+		else
+			return ok();
 	}
 }

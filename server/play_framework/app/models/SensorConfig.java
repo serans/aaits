@@ -133,7 +133,8 @@ public class SensorConfig extends Model {
 				.eq("sensor_config_id", id)
 			.findPagingList(1)
 			.getAsList();
-		if (m != null) return m.get(0).timestamp;
+		if (m != null && m.size()>0)
+			return m.get(0).timestamp;
 		
 		return null;
 	}
