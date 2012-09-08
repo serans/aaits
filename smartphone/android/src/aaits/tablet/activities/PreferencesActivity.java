@@ -1,7 +1,6 @@
 package aaits.tablet.activities;
 
 import aaits.tablet.R;
-import aaits.tablet.bluetooth.DeviceListActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;

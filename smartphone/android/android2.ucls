@@ -1,0 +1,49 @@
+<class-diagram version="1.0.10" icons="true" automaticImage="PNG" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="aaits.tablet.activities.PreferencesActivity" 
+    project="aaits_android" file="/aaits_android/src/aaits/tablet/activities/PreferencesActivity.java" binary="false">    
+    <position x="312" y="125" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="aaits.tablet.activities.ConfigSensorActivity" 
+    project="aaits_android" file="/aaits_android/src/aaits/tablet/activities/ConfigSensorActivity.java" binary="false">    
+    <position x="97" y="151" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="aaits.tablet.activities.DeviceListActivity" 
+    project="aaits_android" file="/aaits_android/src/aaits/tablet/activities/DeviceListActivity.java" binary="false">    
+    <position x="374" y="514" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="aaits.tablet.activities.ConfigActivity" 
+    project="aaits_android" file="/aaits_android/src/aaits/tablet/activities/ConfigActivity.java" binary="false">    
+    <position x="108" y="490" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="aaits.tablet.activities.DataMenuActivity" 
+    project="aaits_android" file="/aaits_android/src/aaits/tablet/activities/DataMenuActivity.java" binary="false">    
+    <position x="521" y="184" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

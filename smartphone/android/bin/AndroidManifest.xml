@@ -27,7 +27,7 @@
         <activity android:name=".activities.ConfigSensorActivity" ></activity>
         <activity android:name="aaits.tablet.activities.DataMenuActivity" ></activity>
         <activity android:name="aaits.tablet.activities.PreferencesActivity" ></activity>
-        <activity android:name="aaits.tablet.bluetooth.DeviceListActivity"
+        <activity android:name=".activities.DeviceListActivity"
                   android:label="select device"
                   android:theme="@android:style/Theme.Dialog"
                   android:configChanges="orientation|keyboardHidden" />

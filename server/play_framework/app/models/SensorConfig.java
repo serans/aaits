@@ -19,6 +19,8 @@ public class SensorConfig extends Model {
 	public String name;
 	public Integer pin;
 	public int steps;
+	public String trans_func;
+	public String trans_params;
 
 	@Constraints.Required
 	public String className;

@@ -25,8 +25,6 @@ public class YamlInterpreter {
 	final int YML_ROOT=0;
 	final int YML_SENSOR=1;
 	final int YML_PARAM=2;
-	final int YML_INIT=3;
-	final int YML_ACTION=4;
 	final int CSV_DATA=5;
 	
 	public NodeConfig readDataFile( String url) throws FileNotFoundException, ParseException {
@@ -62,7 +60,7 @@ public class YamlInterpreter {
 		YamlLine yl = YamlLine.readNextLine(line);
 		
 		if(yl.getLevel()==0 && state!=CSV_DATA) state=YML_ROOT;
-	    if(yl.getLevel()==1) if(state==YML_PARAM || state==YML_INIT || state==YML_ACTION ) state=YML_SENSOR;
+	    if(yl.getLevel()==1) if(state==YML_PARAM ) state=YML_SENSOR;
 	    
 	    switch(state) {
 	        case YML_ROOT:

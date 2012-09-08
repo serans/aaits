@@ -27,7 +27,6 @@ import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import aaits.tablet.bluetooth.BluetoothCommService;
-import aaits.tablet.bluetooth.DeviceListActivity;
 import aaits.tablet.comm.UploadFileTask;
 import aaits.tablet.models.*;
 import aaits.tablet.yaml.YamlInterpreter;

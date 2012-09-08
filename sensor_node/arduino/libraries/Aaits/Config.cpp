@@ -234,6 +234,7 @@ void Config::configureSensor() {
       }
     }
     
+    #ifdef USE_TRANS
     if( strcmp(yr.line.key,"trans_func")==0) {
         if(curr_sensor==NULL) internalError();
         else {
@@ -245,15 +246,17 @@ void Config::configureSensor() {
             }
         }
     }
+    #endif
 
 }
 
 void Config::configureParam() {
+    #ifdef USE_TRANS
    if(curr_sensor != NULL)
      if(curr_sensor->getTransform() != NULL) {
        curr_sensor->getTransform()->addParam(atof(yr.line.key));
      }
-
+    #endif
 }
 
 /** @} */

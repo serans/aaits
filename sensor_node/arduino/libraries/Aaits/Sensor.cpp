@@ -71,6 +71,7 @@ void Sensor::writeDescriptionToSd( SdFile *file  ) {
       file->println(pin);
     }
     
+    #ifdef USE_TRANS
     if(transform != NULL) {
       sdprintP(file, p_indent);
       sdprintP(file, p_trans_func); 
@@ -88,6 +89,7 @@ void Sensor::writeDescriptionToSd( SdFile *file  ) {
           }
       }
     }
+    #endif
 
 }
 
@@ -128,14 +130,17 @@ void Sensor::setPin(byte pin) {
  * @brief returns a data line, with time counted since base_millis
  */
 void Sensor::getDataLine(char *line, long unsigned int base_millis) {
-
+    
+    #ifdef USE_TRANS
     if(transform!=NULL) {
         char fval[8];
         
         dtostrf(transform->convert(measured_value), 1,2, &fval[0]);
         
         sprintf(line,"%ld;%d;%s;%d",measured_millis-base_millis, id, fval , measured_value);
-    } else {
+    } else 
+    #endif
+    {
         sprintf(line,"%ld;%d;%d;",measured_millis-base_millis, id, measured_value);
     }
 }

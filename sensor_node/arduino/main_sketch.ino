@@ -1,3 +1,6 @@
+/**
+ * This is the main file of the AAITS system.
+ */
 #include <EEPROM.h>
 #include <avr/pgmspace.h>
 #include <SdFat.h>
