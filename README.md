@@ -25,5 +25,5 @@ Required hardware:
 * Smartphone:
  * Android device with Bluetooth capabilities
 
-This is a purely experimental project and it's not intended for use in real-life applications. If you need a professional
-solution you should probably check http://www.libelium.com/products/waspmote
+This is a purely experimental project and it's not intended for use in production environments. If you need a professional
+telemonitoring solution you should probably check http://www.libelium.com/products/waspmote
