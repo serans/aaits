@@ -11,9 +11,9 @@ SD card or through an user-friendly android interface using bluetooth. In the la
 not interrupted, and the node will continue to work with the new configuration when it is uploaded.
 
 This repository contains the full source code of the project:
-*Sensor Nodes: C++
-*Android App: Java
-*Web Server App: Java (Using Play! Framework 2.0)
+ * Sensor Nodes: C and C++
+ * Android App: Java
+ * Web Server App: Java and Scala (Play! Framework 2.0)
 
 Required hardware:
 * Sensor nodes:
