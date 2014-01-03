@@ -27,3 +27,9 @@ Required hardware:
 
 This is a purely experimental project and it's not intended for use in production environments. If you need a professional
 telemonitoring solution you should probably check http://www.libelium.com/products/waspmote
+
+Licence
+========
+All source code in this project is
+  * (c) MH Serans, unless stated otherwise
+  * Available under the GPL v3 licence, unless stated otherwise
